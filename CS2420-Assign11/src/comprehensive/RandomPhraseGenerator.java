@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class RandomPhraseGenerator {
 	
@@ -25,7 +26,7 @@ public class RandomPhraseGenerator {
 	public static void readInInput(String fileLocation) throws IOException {
 		//create file from file location
 		File inputFile = new File(fileLocation);
-		System.out.println("file is located at " + fileLocation);
+//		System.out.println("file is located at " + fileLocation);
 		//initialize bufferedReader
 		BufferedReader bf;
 		
@@ -40,23 +41,39 @@ public class RandomPhraseGenerator {
 		//initialize line of the file document
 		String line;
 		
-		//while there is a next line, parse the data
+		//while there is a next line, parse the data into non terminal sections
 		while ((line = bf.readLine()) != null) {
 			//if a nonterminal section is beginning, create a NonTerminal Object
 			boolean inputBegin = line.equals("{");
 			if( inputBegin ) {
 				String nonTerminalName = bf.readLine();
-				System.out.println("NonTerminal's name is: " + nonTerminalName);
+//				System.out.println("NonTerminal's name is: " + nonTerminalName);
 				//add to hashMap
 				nonTermHM.put( nonTerminalName, new NonTerminal() );
 				
-				//while still inside the nonTerminal section
-				String innerLine;
-//				while ((innerLine = bf.readLine()) != "}") {
-//					nonTermHM.get(nonTerminalName).add(innerLine);
-//				}
 			}//end inside curly brackets
 	    }//end while loop to read the input File
+		
+		bf = new BufferedReader( new FileReader( inputFile ) );
+		while ((line = bf.readLine()) != null) {
+			//if a nonterminal section is beginning, create a NonTerminal Object
+			boolean inputBegin = line.equals("{");
+			if( inputBegin ) {
+				String nonTerminalName = bf.readLine();
+//				System.out.println("NonTerminal's name is: " + nonTerminalName);
+				
+				//while still inside the nonTerminal section
+				String innerLine = bf.readLine();
+				while ( !innerLine.equals("}") ) {
+					//
+					nonTermHM.get(nonTerminalName).add(innerLine);
+					innerLine = bf.readLine();
+				}
+			}//end inside curly brackets
+	    }//end while loop to read the input File
+		
+		//close buffered reader to free up space
+		bf.close();
 	}
 
 }

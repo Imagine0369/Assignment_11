@@ -12,6 +12,8 @@ public class NonTerminal {
 	
 	public void add(String terminalString) {
 		System.out.println(terminalString);
+		
+//		termArray.add
 	}
 	
 	public void printFun(String terminalString) {
