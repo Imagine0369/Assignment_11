@@ -11,9 +11,9 @@ public class NonTerminal {
 	}
 	
 	public void add(String terminalString) {
-		System.out.println(terminalString);
+//		System.out.println(terminalString);
 		
-//		termArray.add
+		termArray.add(new Terminal(terminalString) );
 	}
 	
 	public void printFun(String terminalString) {
