@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Terminal {
 	
 //	private ArrayList<String> nonTermNames = new ArrayList<>();
-	private ArrayList<String> parsedTerm = new ArrayList<>();
+	private ArrayList<String> parsedTerms = new ArrayList<>();
 	private boolean nonTermFirst;
 	
 	public Terminal(String terminalString) {
@@ -25,7 +25,7 @@ public class Terminal {
 				index++;
 				String name1 = nonTermName.toString();
 //				nonTermNames.add(name1);
-				parsedTerm.add(name1);
+				parsedTerms.add(name1);
 			} else {
 				//
 				if( index < 1) {
@@ -42,17 +42,26 @@ public class Terminal {
 					index++;
 				}
 				String name1 = termString.toString();
-				parsedTerm.add(name1);
+				parsedTerms.add(name1);
 			}
 		}
 //		System.out.println(name1);
 //		System.out.println(nonTermNames);
-		System.out.println(parsedTerm);
+//		System.out.println(parsedTerms);
 	}
 	
 	public String getString() {
-//		for()
-		return null;
+		StringBuilder returnString = new StringBuilder();// = new StringBuilder();
+		for(String term: parsedTerms) {
+			if ( term.charAt(0) == '<' ) {
+				NonTerminal nonT = RandomPhraseGenerator.nonTermHM.get(term);
+				String hashString = nonT.randomTerminal();
+				returnString.append( hashString );
+			} else {
+				returnString.append( term );
+			}
+		}
+		return returnString.toString();
 	}
 
 }

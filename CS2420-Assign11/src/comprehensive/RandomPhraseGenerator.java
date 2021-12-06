@@ -6,11 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 public class RandomPhraseGenerator {
 	
-	private static HashMap<String, NonTerminal> nonTermHM = new HashMap<>();
+	//the visibilitty is public only to this package
+	static HashMap<String, NonTerminal> nonTermHM = new HashMap<>();
 
 	public static void main(String[] args) {
 		//read in input stuff
@@ -20,10 +20,13 @@ public class RandomPhraseGenerator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		int phraseAmount = Integer.parseInt( args[1] );  
+		generatePhrase( phraseAmount );
 
 	}
 	
-	public static void readInInput(String fileLocation) throws IOException {
+	private static void readInInput(String fileLocation) throws IOException {
 		//create file from file location
 		File inputFile = new File(fileLocation);
 //		System.out.println("file is located at " + fileLocation);
@@ -76,4 +79,12 @@ public class RandomPhraseGenerator {
 		bf.close();
 	}
 
+	public static void generatePhrase(int numOfPhrases) {
+		for(int phrase = 0; phrase < numOfPhrases; phrase++) {
+			String returnPhrase = nonTermHM.get("<start>").randomTerminal();
+			System.out.println(returnPhrase);
+		}
+//		String returnPhrase = nonTermHM.get("<start>").randomTerminal();
+//		return returnPhrase;
+	}
 }
