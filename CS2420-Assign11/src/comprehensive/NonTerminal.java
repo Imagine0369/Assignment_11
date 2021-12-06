@@ -6,8 +6,16 @@ public class NonTerminal {
 	
 	private ArrayList<Terminal> termArray;
 	
-	public void add(Terminal term) {
-		
+	public NonTerminal() {
+		termArray = new ArrayList<>();
+	}
+	
+	public void add(String terminalString) {
+		System.out.println(terminalString);
+	}
+	
+	public void printFun(String terminalString) {
+	System.out.println("The line of one terminal is: "+terminalString);
 	}
 
 }
