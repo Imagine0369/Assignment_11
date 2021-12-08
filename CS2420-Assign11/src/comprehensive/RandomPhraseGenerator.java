@@ -44,38 +44,30 @@ public class RandomPhraseGenerator {
 		//initialize line of the file document
 		String line;
 		
+		String currentNT;
+		String innerLine;
 		//while there is a next line, parse the data into non terminal sections
 		while ((line = bf.readLine()) != null) {
 			//if a nonterminal section is beginning, create a NonTerminal Object
 			boolean inputBegin = line.equals("{");
 			if( inputBegin ) {
 				String nonTerminalName = bf.readLine();
+				currentNT = nonTerminalName;
 //				System.out.println("NonTerminal's name is: " + nonTerminalName);
 				//add to hashMap
 				nonTermHM.put( nonTerminalName, new NonTerminal() );
-				
-			}//end inside curly brackets
-	    }//end while loop to read the input File
-		
-		bf = new BufferedReader( new FileReader( inputFile ) );
-		while ((line = bf.readLine()) != null) {
-			//if a nonterminal section is beginning, create a NonTerminal Object
-			boolean inputBegin = line.equals("{");
-			if( inputBegin ) {
-				String nonTerminalName = bf.readLine();
-//				System.out.println("NonTerminal's name is: " + nonTerminalName);
-				
-				//while still inside the nonTerminal section
-				String innerLine = bf.readLine();
-				while ( !innerLine.equals("}") ) {
-					//
-					nonTermHM.get(nonTerminalName).add(innerLine);
+				//read next line
+				innerLine = bf.readLine();
+				//add everything within the curly brackets to map (besides the name of the NT)
+				while(!innerLine.equals("}")) {
+					nonTermHM.get(currentNT).add(innerLine);
+					//advance to next line
 					innerLine = bf.readLine();
 				}
+				line = innerLine;
 			}//end inside curly brackets
 	    }//end while loop to read the input File
 		
-		//close buffered reader to free up space
 		bf.close();
 	}
 
