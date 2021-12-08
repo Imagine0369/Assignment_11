@@ -9,10 +9,14 @@ import java.util.HashMap;
 
 public class RandomPhraseGenerator {
 	
+	protected static int firstHalfNumberOfPhrases;
+	protected static int secondHalfNumberOfPhrases;
+	protected static ArrayList<String> phrases;
+	
 	//the visibilitty is public only to this package
 	static HashMap<String, NonTerminal> nonTermHM = new HashMap<>();
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		//read in input stuff
 		try {
 			readInInput("src/comprehensive/"+args[0]);
@@ -71,12 +75,29 @@ public class RandomPhraseGenerator {
 		bf.close();
 	}
 
-	public static void generatePhrase(int numOfPhrases) {
-		for(int phrase = 0; phrase < numOfPhrases; phrase++) {
-			String returnPhrase = nonTermHM.get("<start>").randomTerminal();
-			System.out.println(returnPhrase);
-		}
-//		String returnPhrase = nonTermHM.get("<start>").randomTerminal();
-//		return returnPhrase;
+	public static void generatePhrase(int numOfPhrases) throws InterruptedException {
+		firstHalfNumberOfPhrases = numOfPhrases/2;
+		secondHalfNumberOfPhrases = numOfPhrases - firstHalfNumberOfPhrases;
+		
+		phrases = new ArrayList<>(numOfPhrases);
+		
+		Thread thread1 = new Thread(new MyWorker1());
+		thread1.start();
+		Thread thread2 = new Thread(new MyWorker2());
+		thread2.start();
+		thread2.join();
+		
+		//output each phrase
+		for ( int index = 0; index < phrases.size(); index++ ) {
+			System.out.println( phrases.get(index) );
+		}//end print for loop
+		
+		
+// 		for(int phrase = 0; phrase < numOfPhrases; phrase++) {
+// 			String returnPhrase = nonTermHM.get("<start>").randomTerminal();
+// 			System.out.println(returnPhrase);
+// 		}
+// //		String returnPhrase = nonTermHM.get("<start>").randomTerminal();
+// //		return returnPhrase;
 	}
 }
